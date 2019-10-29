@@ -120,7 +120,7 @@ class Index extends Taro.Component {
     const { goods, sumPrice } = this.state;
     const puchaseGoods = goods.filter(good => good.isSelect)
     if (sumPrice) {
-      const puchaseGoodData = JSON.stringify(puchaseGoods)
+      const puchaseGoodData = encodeURIComponent(JSON.stringify(puchaseGoods))
       Taro.navigateTo({
         url: `/pages/shopping/order/index?puchaseGoodData=${puchaseGoodData}&sumPrice=${sumPrice}`
       })

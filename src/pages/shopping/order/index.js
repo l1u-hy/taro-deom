@@ -7,15 +7,20 @@ export default class Order extends Taro.Component {
     navigationBarTitleText: '购物车'
   }
 
+  state = {
+    puchaseGoods: [],
+    sumPrice: 0,
+  }
+
   componentWillMount() {
-    // console.log(this.$router.params)
+    // 解压参数
     const { puchaseGoodData, sumPrice } = this.$router.params
-    const puchaseGoods = JSON.parse(this.$router.params.puchaseGoodData)
-    console.log(puchaseGoods)
-    console.log(this.$router.params.puchaseGoodData)
+    const puchaseGoods = JSON.parse(decodeURIComponent(puchaseGoodData))
+    this.setState({puchaseGoods, sumPrice})
   }
 
   render() {
+    const { puchaseGoods, sumPrice } = this.state;
     return (
       <View>
         下单
