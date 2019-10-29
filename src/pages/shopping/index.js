@@ -140,8 +140,8 @@ class Index extends Taro.Component {
             name={good.name}
             price={good.price}
             count={good.count}
-            onCountChange={(value) => this.handleOnCountChange(good.id, value)}
-            onCheckChange={(isSelect) => this.handleOnCheckChange(good.id, isSelect)}
+            onCountChange={this.handleOnCountChange.bind(this, good.id)}
+            onCheckChange={this.handleOnCheckChange.bind(this, good.id)}
           />
         ))}
 
