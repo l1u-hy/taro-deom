@@ -115,6 +115,18 @@ class Index extends Taro.Component {
     return goods.filter(good => good.isSelect).reduce((prev, cur) => prev + cur.price * cur.count, 0)
   }
 
+  // 结算
+  onSettle = () => {
+    const { goods, sumPrice } = this.state;
+    const puchaseGoods = goods.filter(good => good.isSelect)
+    if (sumPrice) {
+      const puchaseGoodData = JSON.stringify(puchaseGoods)
+      Taro.navigateTo({
+        url: `/pages/shopping/order/index?puchaseGoodData=${puchaseGoodData}&sumPrice=${sumPrice}`
+      })
+    }
+  }
+
   render() {
     const { goods, sumPrice, isAllSelect } = this.state
     return (
@@ -138,6 +150,7 @@ class Index extends Taro.Component {
           sumPrice={sumPrice}
           isAllSelect={isAllSelect}
           onCheckChange={this.handleSelectAllGoods}
+          onSettle={this.onSettle}
         />
       </View>
     )

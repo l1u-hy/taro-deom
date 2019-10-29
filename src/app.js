@@ -20,6 +20,7 @@ class App extends Taro.Component {
       'pages/index/index',
       'pages/index/auth/index',
       // 'pages/shopping/index',
+      'pages/shopping/order/index',
     ],
     window: {
       backgroundTextStyle: 'light',

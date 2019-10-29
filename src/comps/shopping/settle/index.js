@@ -7,7 +7,7 @@ import './index.scss'
 
 export default class Settle extends Taro.Component {
   render() {
-    const { isAllSelect, sumPrice, onCheckChange } = this.props
+    const { isAllSelect, sumPrice, onCheckChange, onSettle } = this.props
     return (
       <View className='index at-row at-row__align--center'>
         <View className='at-col at-col-3'>
@@ -28,7 +28,7 @@ export default class Settle extends Taro.Component {
           </View>
         </View>
         <View className='at-col at-col-3 btn'>
-          <AtButton type='primary' circle >结算</AtButton>
+          <AtButton type='primary' circle onClick={onSettle}>结算</AtButton>
         </View>
       </View>
     )
