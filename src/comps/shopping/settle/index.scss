@@ -1,0 +1,33 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+
+.index {
+  color: gray;
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 10;
+  right: 0;
+  background-color: #fff;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.select {
+  padding-left: 10px;
+}
+
+.desc {
+  font-size: 24px;
+}
+
+.price-info {
+  color: black;
+}
+
+.price {
+  color: red;
+}
+
+.btn {
+  padding: 10px 20px 10px 0;
+}

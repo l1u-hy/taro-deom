@@ -1,0 +1,47 @@
+//******字体颜色变量******/
+$color-major: #FF6200;
+$color-primary: #c18346;
+$color-primary-darken: darken($color-primary, 5%);
+$color-muted: #A3A3A3;
+$color-weak: #626E7A;
+$color-normal: #262626;
+$color-danger: #e33;
+$color-warn: #f85;
+$color-white: #fff;
+$color-black: #000;
+$color-red: #ff4949;
+$color-brand: #7A5330;
+$color-grey: #B0B0B0;
+$color-grey-darken: darken($color-grey, 5%);
+$color-blue: #00C2CC;
+$color-green: #05DF86;
+$color-pink: #F67463;
+$color-purple: #DF3F87;
+$color-ec: #ECECEC;
+$color-orange:#FEA200;
+$color-f4:#f4f4f4;
+$color-78:#787878;
+$color-E1:#e1f5f6;
+$color-EA:#F5DEEA;
+$color-E4:#E1F2F4;
+$color-FC:#FFE3F0;
+$color-F0:#F0F0F0;
+$color-66:#666666;
+
+//******字体大小变量******/
+$text-xxl: 34px;
+$text-xl: 32px;
+$text-nm: 28px;
+$text-lg: 30px;
+$text-sm: 26px;
+$text-xs: 24px;
+$text-xxs: 22px;
+$text-form: 17px;
+
+
+//******边框样式******/
+$color-border: #EDEDED;
+$color-line: #EEEEEE;
+$border: 1px solid $color-border;
+$border-line: 1px solid $color-line;
+$border-dot: 1px dotted #EFF0F2;

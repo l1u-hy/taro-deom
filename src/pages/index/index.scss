@@ -1,0 +1,39 @@
+// @import "~taro-ui/dist/style/components/flex.scss";
+
+.swiperBar-wrap {
+  padding: 10px 30px;
+}
+
+.swiperBar-ad {
+  height: 50px;
+}
+
+.medicine {
+  // display: flex;
+  // flex-direction: column;
+  text-align: center;
+  // align-items: center;
+  display: block;
+}
+
+.medicine-head {
+  padding: 20px 0;
+}
+
+// .medicine-headline {
+  
+// }
+
+.medicine-title {
+  letter-spacing: 5px;
+  color: gray;
+  font-size: 18px;
+}
+
+.medicine-recommond {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+

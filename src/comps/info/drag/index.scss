@@ -1,0 +1,66 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "../../../public/css/mixin";
+@import "../../../public/css/base";
+
+.drag {
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
+  // border: 1px solid #ccc;
+  margin: 0 auto;
+  // background-color: #ccc;
+}
+
+.drag-normal {
+  width: 600px;
+}
+
+.drag-small {
+  width: 320px;
+}
+
+.drag-image {
+  margin: 20px 0;
+}
+
+.drag-image-normal {
+  width: 400px;
+  height: 400px;
+}
+
+.drag-image-small {
+  width: 200px;
+  height: 200px;
+}
+
+.drag-info {
+  // text-align: center;
+}
+
+// .drag-name {
+  
+// }
+
+.drag-desc {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ellipsis {
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+.drag-desc-price {
+  color: red;
+}
+
+.drag-desc-num {
+  color: green;
+}
+

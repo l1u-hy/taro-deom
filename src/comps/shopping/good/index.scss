@@ -1,0 +1,46 @@
+@import "~taro-ui/dist/style/index.scss";
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "~taro-ui/dist/style/components/input-number.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+
+.index {
+  padding: 20px;
+  height: 200px;
+}
+
+
+.img-wrap {
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  // border: 1px solid black;
+}
+
+.good-img {
+  width: 130px;
+  height: 100px;
+}
+
+.good-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 20px;
+}
+
+.good-name {
+  align-content: flex-start;
+  white-space: normal;
+  word-wrap: normal;
+  padding-bottom: 20px;
+}
+
+.good-price-count {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.good-price {
+  color: red;
+}
