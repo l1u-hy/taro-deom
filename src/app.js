@@ -16,10 +16,9 @@ class App extends Taro.Component {
 
   config = {
     pages: [
-      'pages/shopping/index',
       'pages/index/index',
       'pages/index/auth/index',
-      // 'pages/shopping/index',
+      'pages/shopping/index',
       'pages/shopping/order/index',
     ],
     window: {

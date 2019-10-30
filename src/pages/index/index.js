@@ -4,7 +4,7 @@ import { AtGrid } from "taro-ui"
 import { observer, inject } from '@tarojs/mobx'
 import KtSearchBar from '../../comps/layout/searchBar'
 import KtSwipeBar from '../../comps/layout/swipeBar'
-import KtDrag from '../../comps/info/drag'
+import KtDrug from '../../comps/info/drug'
 import './index.scss'
 
 
@@ -23,32 +23,49 @@ class Index extends Taro.Component {
   // }
 
   state = {
-    newDrag: {
-      imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
+    newDrug: {
+      id: '0',
+      imgUrl: 'http://img2.imgtn.bdimg.com/it/u=1669904876,2411010804&fm=26&gp=0.jpg',
       size: 'normal',
       name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
       price: '128',
       num: '1234',
     },
-    reCommendDrags: [
+    reCommendDrugs: [
       {
-        id: 1,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
+        id: '1',
+        imgUrl: 'http://img4.imgtn.bdimg.com/it/u=1027220203,1794872175&fm=26&gp=0.jpg',
         size: 'small',
         name: '诺祯DHA藻油小袋熊牌诺祯DHA',
         price: '128',
         num: '1234',
       },
       {
-        id: 2,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
+        id: '2',
+        imgUrl: 'http://img0.imgtn.bdimg.com/it/u=2054288585,3297966539&fm=26&gp=0.jpg',
         size: 'small',
         name: '诺祯DHA藻油小袋熊牌诺祯DHA',
         price: '128',
         num: '1234',
       },
       {
-        id: 3,
+        id: '3',
+        imgUrl: 'http://img5.imgtn.bdimg.com/it/u=2172777853,3262388300&fm=26&gp=0.jpg',
+        size: 'small',
+        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
+        price: '128',
+        num: '1234',
+      },
+      {
+        id: '4',
+        imgUrl: 'http://img4.imgtn.bdimg.com/it/u=1901455908,1974132964&fm=26&gp=0.jpg',
+        size: 'small',
+        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
+        price: '128',
+        num: '1234',
+      },
+      {
+        id: '5',
         imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
         size: 'small',
         name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
@@ -56,41 +73,81 @@ class Index extends Taro.Component {
         num: '1234',
       },
       {
-        id: 4,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: 5,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: 6,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
+        id: '6',
+        imgUrl: 'http://img0.imgtn.bdimg.com/it/u=3273464959,3880466769&fm=26&gp=0.jpg',
         size: 'small',
         name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
         price: '128',
         num: '1234',
       }
-    ]
+    ],
+    drugs: [],
   }
 
-  componentWillMount() { }
+  componentWillMount() {
+    // 将drugs写入缓存
+    const { newDrug, reCommendDrugs } = this.state
+    const drugs = [newDrug, ...reCommendDrugs].map(drug => ({
+      ...drug,
+      count: 0,
+      isSelect: false,
+    }))
+    Taro.setStorage({
+      key: 'drugs',
+      data: drugs,
+      success: () => {
+        this.setState({ drugs })
+      }
+    })
+  }
 
   componentDidMount() {
-    // const {auth} = this.props;
-    // if(!auth.check({block: true}))return;
+    
   }
 
+  componentDidShow() {
+    // onShow时重新读缓存
+    const that = this
+    Taro.getStorageInfo({
+      success({ keys }) {
+        if (keys.indexOf('drugs') !== -1) {
+          Taro.getStorage({
+            key: 'drugs',
+            success({ data }) {
+              that.setState({ drugs: data })
+            }
+          })
+        }
+      }
+    })
+  }
+
+  // 点击商品，添加到购物车
+  handleAddToShoppingCart(id) {
+    const { drugs } = this.state
+    // 修改drugs缓存
+    drugs.forEach(drug => {
+      if (drug.id === id) {
+        drug.count = drug.count + 1;
+      }
+    })
+    Taro.setStorage({
+      key: 'drugs',
+      data: drugs,
+      success() {
+        Taro.showToast({
+          title: '添加到购物车',
+          icon: 'success',
+          duration: 1000
+        })
+      }
+    })
+  }
+
+
+
   render() {
-    const { newDrag, reCommendDrags } = this.state;
+    const { newDrug, reCommendDrugs } = this.state;
     return (
       <View className='index'>
         {/* 搜索栏 */}
@@ -107,7 +164,7 @@ class Index extends Taro.Component {
             comp={{
               data: [
                 { url: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1588724423,1791597531&fm=26&gp=0.jpg' },
-                { url: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg' },
+                { url: 'http://img2.imgtn.bdimg.com/it/u=1669904876,2411010804&fm=26&gp=0.jpg' },
                 { url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=785764038,243614380&fm=26&gp=0.jpg' },
               ]
             }}
@@ -147,7 +204,7 @@ class Index extends Taro.Component {
               cls: 'swiperBar-ad',
               data: [
                 { url: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1588724423,1791597531&fm=26&gp=0.jpg' },
-                { url: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg' },
+                { url: 'http://img2.imgtn.bdimg.com/it/u=1669904876,2411010804&fm=26&gp=0.jpg' },
                 { url: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=785764038,243614380&fm=26&gp=0.jpg' },
               ]
             }}
@@ -160,12 +217,13 @@ class Index extends Taro.Component {
             <View className='medicine-headline'>· 新品上市 ·</View>
             <View className='medicine-title'>NEW PRODUCTS</View>
           </View>
-          <KtDrag
-            imgUrl={newDrag.imgUrl}
-            size={newDrag.size}
-            name={newDrag.name}
-            price={newDrag.price}
-            num={newDrag.num}
+          <KtDrug
+            imgUrl={newDrug.imgUrl}
+            size={newDrug.size}
+            name={newDrug.name}
+            price={newDrug.price}
+            num={newDrug.num}
+            onClick={this.handleAddToShoppingCart.bind(this, newDrug.id)}
           />
         </View>
 
@@ -176,14 +234,15 @@ class Index extends Taro.Component {
             <View className='medicine-title'>RECOMMEND</View>
           </View>
           <View className='at-row at-row--wrap'>
-            {reCommendDrags.map(drag => (
-              <View className='at-col at-col-6' key={drag.id}>
-                <KtDrag
-                  imgUrl={drag.imgUrl}
-                  size={drag.size}
-                  name={drag.name}
-                  price={drag.price}
-                  num={drag.num}
+            {reCommendDrugs.map(drug => (
+              <View className='at-col at-col-6' key={drug.id}>
+                <KtDrug
+                  imgUrl={drug.imgUrl}
+                  size={drug.size}
+                  name={drug.name}
+                  price={drug.price}
+                  num={drug.num}
+                  onClick={this.handleAddToShoppingCart.bind(this, drug.id)}
                 />
               </View>
             ))}

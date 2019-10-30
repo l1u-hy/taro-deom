@@ -23,7 +23,7 @@ export default class Good extends Taro.Component {
               <View className='good-price'>￥{price}</View>
               <View className='good-count'>
                 <AtInputNumber
-                  min={0}
+                  min={1}
                   step={1}
                   width={60}
                   value={count}

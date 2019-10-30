@@ -5,74 +5,51 @@ import Good from '../../comps/shopping/good'
 import Settle from '../../comps/shopping/settle'
 import './index.scss'
 
-
 @inject('auth')
 @observer
-class Index extends Taro.Component {
+export default class Shopping extends Taro.Component {
 
   config = {
     navigationBarTitleText: '购物车'
   }
 
   state = {
-    goods: [
-      {
-        id: 1,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '100',
-        count: 0,
-        isSelect: false,
-      },
-      {
-        id: 2,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '100',
-        count: 0,
-        isSelect: false,
-      },
-      {
-        id: 3,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '100',
-        count: 0,
-        isSelect: false,
-      },
-      {
-        id: 4,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '100',
-        count: 0,
-        isSelect: false,
-      },
-      {
-        id: 5,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '100',
-        count: 0,
-        isSelect: false,
-      },
-      {
-        id: 6,
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '100',
-        count: 0,
-        isSelect: false,
-      },
-    ],
+    goods: [],
     sumPrice: 0,
     isAllSelect: false,
+    drugs: [],
   }
 
-  componentWillMount() { }
+  componentWillMount() {
+
+  }
+
+  componentDidShow() {
+    // 读取drugs --> goods
+    this.handleDrugsStorageToGoods()
+  }
 
   componentDidMount() {
 
+  }
+
+  // 读取drugs --> goods
+  handleDrugsStorageToGoods() {
+    const that = this
+    Taro.getStorageInfo({
+      success({ keys }) {
+        if (keys.indexOf('drugs') !== -1) {
+          Taro.getStorage({
+            key: 'drugs',
+            success({ data }) {
+              const goods = data.filter(drug => drug.count)
+              // 保存 drugs 和 goods
+              that.setState({ drugs: data, goods })
+            }
+          })
+        }
+      }
+    })
   }
 
   // 选择商品
@@ -100,14 +77,29 @@ class Index extends Taro.Component {
 
   // 数量加减
   handleOnCountChange = (id, value) => {
-    const { goods } = this.state
+    // 形参 typeof value  string
+    value = parseInt(value)
+    let { goods, drugs } = this.state
+
+    // 处理 goods
     const currentGood = goods.filter(good => good.id === id)[0]
     currentGood.count = value
+    this.setState({ goods })
     // 如果当前商品已选，计算总价
     if (currentGood.isSelect) {
       this.setState({ sumPrice: this.getSumPrice(goods) })
     }
-    this.setState({ goods })
+
+    // 处理 drugs
+    drugs.forEach(drug => {
+      if (drug.id === id) {
+        drug.count = value
+      }
+    })
+    Taro.setStorage({
+      key: 'drugs',
+      data: drugs,
+    })
   }
 
   // 计算总价
@@ -156,5 +148,3 @@ class Index extends Taro.Component {
     )
   }
 }
-
-export default Index
