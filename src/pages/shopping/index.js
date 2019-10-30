@@ -71,20 +71,28 @@ export default class Shopping extends Taro.Component {
         drug.isSelect = isSelect
       }
     })
-    Taro.setStorage({
-      key: 'drugs',
-      data: drugs,
-    })
-    this.setState({drugs})
+    this.setDrugsStorage(drugs)
   }
 
   // 全选
   handleSelectAllGoods = (isAllSelect) => {
-    const { goods } = this.state
+    const { goods, drugs } = this.state
     goods.forEach(good => good.isSelect = isAllSelect)
     // 计算总价
     const sumPrice = this.getSumPrice(goods)
     this.setState({ goods, isAllSelect, sumPrice })
+
+    // 处理drugs
+    if (isAllSelect) {
+      goods.forEach(good => {
+        drugs.forEach(drug => {
+          if (drug.id === good.id) {
+            drug.isSelect = true;
+          }
+        })
+      })
+      this.setDrugsStorage(drugs)
+    }
   }
 
   // 数量加减
@@ -108,11 +116,7 @@ export default class Shopping extends Taro.Component {
         drug.count = value
       }
     })
-    Taro.setStorage({
-      key: 'drugs',
-      data: drugs,
-    })
-    this.setState({drugs})
+    this.setDrugsStorage(drugs)
   }
 
   // 计算总价
@@ -130,6 +134,17 @@ export default class Shopping extends Taro.Component {
         url: `/pages/shopping/order/index?puchaseGoodData=${puchaseGoodData}&sumPrice=${sumPrice}`
       })
     }
+  }
+
+  // 写drugs缓存
+  setDrugsStorage(drugs) {
+    Taro.setStorage({
+      key: 'drugs',
+      data: drugs,
+      success: () => {
+        this.setState({ drugs })
+      }
+    })
   }
 
   render() {

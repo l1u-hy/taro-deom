@@ -7,7 +7,6 @@ import KtSwipeBar from '../../comps/layout/swipeBar'
 import KtDrug from '../../comps/info/drug'
 import './index.scss'
 
-
 @inject('auth', 'home')
 @observer
 class Index extends Taro.Component {
@@ -143,8 +142,6 @@ class Index extends Taro.Component {
       }
     })
   }
-
-
 
   render() {
     const { newDrug, reCommendDrugs } = this.state;
