@@ -54,7 +54,7 @@ export default class Shopping extends Taro.Component {
 
   // 选择商品
   handleOnCheckChange = (id, isSelect) => {
-    const { goods } = this.state
+    const { goods, drugs } = this.state
     const currentGood = goods.filter(good => good.id === id)[0]
     currentGood.isSelect = isSelect
     // 计算总价
@@ -64,6 +64,18 @@ export default class Shopping extends Taro.Component {
       isAllSelect: goods.every(good => good.isSelect),
       sumPrice,
     })
+
+    // 处理 drugs
+    drugs.forEach(drug => {
+      if (drug.id === id) {
+        drug.isSelect = isSelect
+      }
+    })
+    Taro.setStorage({
+      key: 'drugs',
+      data: drugs,
+    })
+    this.setState({drugs})
   }
 
   // 全选
@@ -100,6 +112,7 @@ export default class Shopping extends Taro.Component {
       key: 'drugs',
       data: drugs,
     })
+    this.setState({drugs})
   }
 
   // 计算总价
