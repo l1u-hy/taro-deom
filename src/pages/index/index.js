@@ -5,6 +5,8 @@ import { observer, inject } from '@tarojs/mobx'
 import KtSearchBar from '../../comps/layout/searchBar'
 import KtSwipeBar from '../../comps/layout/swipeBar'
 import KtDrug from '../../comps/info/drug'
+import Tips from '../../utils/tips'
+
 import './index.scss'
 
 @inject('auth', 'home')
@@ -91,6 +93,7 @@ class Index extends Taro.Component {
       count: 0,
       isSelect: false,
     }))
+    Taro.setStorageSync
     Taro.setStorage({
       key: 'drugs',
       data: drugs,
@@ -122,7 +125,8 @@ class Index extends Taro.Component {
   }
 
   // 点击商品，添加到购物车
-  handleAddToShoppingCart(id) {
+  async handleAddToShoppingCart(id) {
+    await Tips.confirm("确认加入购物车")
     const { drugs } = this.state
     // 修改drugs缓存
     drugs.forEach(drug => {
@@ -134,11 +138,7 @@ class Index extends Taro.Component {
       key: 'drugs',
       data: drugs,
       success() {
-        Taro.showToast({
-          title: '添加到购物车',
-          icon: 'success',
-          duration: 1000
-        })
+        Tips.success('添加到购物车')
       }
     })
   }

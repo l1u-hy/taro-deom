@@ -28,7 +28,7 @@ export default class Settle extends Taro.Component {
           </View>
         </View>
         <View className='at-col at-col-3 btn'>
-          <AtButton type='primary' circle onClick={onSettle}>结算</AtButton>
+          <AtButton type='primary' circle onClick={onSettle} className='custom-button'>结算</AtButton>
         </View>
       </View>
     )
