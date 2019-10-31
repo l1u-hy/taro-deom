@@ -19,8 +19,8 @@ shopping.init = async function () {
   this.drugs = await getDrugsStorage()
   this.goods = this.drugs.filter(drug => drug.count)
   this.sumPrice = getSumPrice(this.goods)
-  this.isAllSelect = this.goods.every(good => good.isSelect)
-
+  // 如果不加 this.goods.length 判断，没有购物车商品时，isAllSelect为true
+  this.isAllSelect = this.goods.length && this.goods.every(good => good.isSelect)
 }
 
 /**
