@@ -8,6 +8,7 @@ const shopping = observable({
   drugs: [],
   sumPrice: 0,
   isAllSelect: false,
+  puchaseGoods: [],
 })
 
 /**
@@ -18,6 +19,7 @@ shopping.init = async function () {
   this.goods = this.drugs.filter(drug => drug.count)
   this.sumPrice = getSumPrice(this.goods)
   this.isAllSelect = this.goods.every(good => good.isSelect)
+
 }
 
 /**
@@ -92,26 +94,15 @@ shopping.handleOnCountChange = function (id, value) {
 }
 
 /**
- * 结算
+ * 结算--跳转到结算页面
  */
 shopping.handleSettleGoods = function () {
-  const puchaseGoods = this.goods.filter(good => good.isSelect)
+  this.puchaseGoods = this.goods.filter(good => good.isSelect)
   if (this.sumPrice) {
-    const puchaseGoodData = encodeURIComponent(JSON.stringify(puchaseGoods))
     Taro.navigateTo({
-      url: `/pages/shopping/order/index?puchaseGoodData=${puchaseGoodData}&sumPrice=${this.sumPrice}`
+      url: '/pages/shopping/order/index'
     })
   }
-}
-
-// 处理 isSelect
-function handleIsSelect(type, id, isSelect) {
-  console.log("------", this, type)
-  this[type].forEach(item => {
-    if (item.id === id) {
-      item.isSelect = isSelect
-    }
-  })
 }
 
 // 计算总价

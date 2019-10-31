@@ -1,35 +1,29 @@
 import Taro from '@tarojs/taro'
-import { View, Image, Textarea } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
+import { observer, inject } from '@tarojs/mobx'
 import { AtInput } from "taro-ui"
 import './index.scss'
 
+@inject('auth', 'shopping')
+@observer
 export default class Order extends Taro.Component {
   config = {
     navigationBarTitleText: '购物车'
   }
 
-  state = {
-    puchaseGoods: [],
-    sumPrice: 0,
-  }
-
   componentWillMount() {
-    // 解压参数
-    const { puchaseGoodData, sumPrice } = this.$router.params
-    const puchaseGoods = JSON.parse(decodeURIComponent(puchaseGoodData))
-    this.setState({ puchaseGoods, sumPrice })
+
   }
 
   render() {
-    const { puchaseGoods, sumPrice } = this.state;
+    const { shopping: { sumPrice, puchaseGoods }} = this.props;
     const sumCount = puchaseGoods.length
-
     return (
       <View className='index'>
         <View className='content'>
           {/* 商品 */}
           <View className='good'>
-            {puchaseGoods.map(good => (
+            {this.props.shopping.puchaseGoods.map(good => (
               <View key={good.id} className='at-row at-row__align--center good-item'>
                 <View className='at-col at-col-4'>
                   <View className='img-card'>
