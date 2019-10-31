@@ -18,134 +18,23 @@ class Index extends Taro.Component {
     backgroundColor: '#ccc'
   }
 
-  // constructor (props){
-  //   super(props)
-  //   this.state = {}
-  // }
-
-  state = {
-    newDrug: {
-      id: '0',
-      imgUrl: 'http://img2.imgtn.bdimg.com/it/u=1669904876,2411010804&fm=26&gp=0.jpg',
-      size: 'normal',
-      name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-      price: '128',
-      num: '1234',
-    },
-    reCommendDrugs: [
-      {
-        id: '1',
-        imgUrl: 'http://img4.imgtn.bdimg.com/it/u=1027220203,1794872175&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: '2',
-        imgUrl: 'http://img0.imgtn.bdimg.com/it/u=2054288585,3297966539&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: '3',
-        imgUrl: 'http://img5.imgtn.bdimg.com/it/u=2172777853,3262388300&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: '4',
-        imgUrl: 'http://img4.imgtn.bdimg.com/it/u=1901455908,1974132964&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: '5',
-        imgUrl: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2308532487,3045423790&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-        price: '128',
-        num: '1234',
-      },
-      {
-        id: '6',
-        imgUrl: 'http://img0.imgtn.bdimg.com/it/u=3273464959,3880466769&fm=26&gp=0.jpg',
-        size: 'small',
-        name: '诺祯DHA藻油小袋熊牌诺祯DHA藻油小袋诺祯',
-        price: '128',
-        num: '1234',
-      }
-    ],
-    drugs: [],
-  }
-
   componentWillMount() {
-    // 将drugs写入缓存
-    const { newDrug, reCommendDrugs } = this.state
-    const drugs = [newDrug, ...reCommendDrugs].map(drug => ({
-      ...drug,
-      count: 0,
-      isSelect: false,
-      isOpened: false,
-    }))
-    Taro.setStorageSync
-    Taro.setStorage({
-      key: 'drugs',
-      data: drugs,
-      success: () => {
-        this.setState({ drugs })
-      }
-    })
-  }
-
-  componentDidMount() {
-    
+    // 写入缓存
+    this.props.home.setDrugsStorage()
   }
 
   componentDidShow() {
-    // onShow时重新读缓存
-    const that = this
-    Taro.getStorageInfo({
-      success({ keys }) {
-        if (keys.indexOf('drugs') !== -1) {
-          Taro.getStorage({
-            key: 'drugs',
-            success({ data }) {
-              that.setState({ drugs: data })
-            }
-          })
-        }
-      }
-    })
+    // onshow时读取最新缓存
+    this.props.home.getDrugsStorage()
   }
 
   // 点击商品，添加到购物车
-  async handleAddToShoppingCart(id) {
-    await Tips.confirm("确认加入购物车")
-    const { drugs } = this.state
-    // 修改drugs缓存
-    drugs.forEach(drug => {
-      if (drug.id === id) {
-        drug.count = drug.count + 1;
-      }
-    })
-    Taro.setStorage({
-      key: 'drugs',
-      data: drugs,
-      success() {
-        Tips.success('添加到购物车')
-      }
-    })
+  handleAddToShoppingCart = (id) => {
+    this.props.home.handleAddToShoppingCart(id)
   }
 
   render() {
-    const { newDrug, reCommendDrugs } = this.state;
+    const { home: { newDrug, reCommendDrugs } } = this.props;
     return (
       <View className='index'>
         {/* 搜索栏 */}

@@ -121,6 +121,7 @@ shopping.handleDeteleSingleGood = function (key, id) {
     this.drugs.forEach(drug => {
       if (drug.id === id) {
         drug.count = 0
+        drug.isOpened = false
       }
     })
     setDrugsStorage(this.drugs)
