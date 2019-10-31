@@ -105,6 +105,36 @@ shopping.handleSettleGoods = function () {
   }
 }
 
+/**
+ * 删除单个
+ */
+shopping.handleDeteleSingleGood = function (key, id) {
+  // key === 0 ? '取消' : '删除'
+  if (key === 0) {
+    this.goods.forEach(good => {
+      if (good.id === id) {
+        good.isOpened = false
+      }
+    })
+  } else {
+    this.goods = this.goods.filter(good => good.id !== id)
+    this.drugs.forEach(drug => {
+      if (drug.id === id) {
+        drug.count = 0
+      }
+    })
+    setDrugsStorage(this.drugs)
+  }
+}
+
+/**
+ * 打开滑块
+ */
+shopping.handleOpenSwipeAction = function (id) {
+  // 打开一个，其他关闭
+  this.goods.forEach(good => good.isOpened = good.id === id)
+}
+
 // 计算总价
 function getSumPrice(goods) {
   return goods.filter(good => good.isSelect).reduce((prev, cur) => prev + cur.price * cur.count, 0)

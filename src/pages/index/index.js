@@ -92,6 +92,7 @@ class Index extends Taro.Component {
       ...drug,
       count: 0,
       isSelect: false,
+      isOpened: false,
     }))
     Taro.setStorageSync
     Taro.setStorage({
