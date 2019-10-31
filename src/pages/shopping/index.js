@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View} from '@tarojs/components'
 import { AtSwipeAction } from "taro-ui"
 import { observer, inject } from '@tarojs/mobx'
 import Good from '../../comps/shopping/good'

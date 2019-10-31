@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro';
 import { observable } from 'mobx'
+import Tips from '../utils/tips'
 
 const DRUGS = 'drugs'
 
@@ -108,7 +109,7 @@ shopping.handleSettleGoods = function () {
 /**
  * 删除单个
  */
-shopping.handleDeteleSingleGood = function (key, id) {
+shopping.handleDeteleSingleGood = async function (key, id) {
   // key === 0 ? '取消' : '删除'
   if (key === 0) {
     this.goods.forEach(good => {
@@ -117,6 +118,7 @@ shopping.handleDeteleSingleGood = function (key, id) {
       }
     })
   } else {
+    await Tips.confirm("确认从购物车中删除该商品吗？")
     this.goods = this.goods.filter(good => good.id !== id)
     this.drugs.forEach(drug => {
       if (drug.id === id) {
@@ -124,6 +126,7 @@ shopping.handleDeteleSingleGood = function (key, id) {
         drug.isOpened = false
       }
     })
+    Tips.success('删除成功')
     setDrugsStorage(this.drugs)
   }
 }
