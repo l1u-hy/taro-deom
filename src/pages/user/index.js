@@ -1,8 +1,10 @@
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtAvatar } from 'taro-ui'
+import KtUserCard from '../../comps/user/card'
 import KtOrderBar from '../../comps/user/order'
 import KtToolBar from '../../comps/user/tool'
+import './index.scss'
 
 export default class User extends Taro.Component {
   config = {
@@ -16,6 +18,8 @@ export default class User extends Taro.Component {
           <AtAvatar circle image='http://storage.360buyimg.com/mtd/home/32443566_635798770100444_2113947400891531264_n1533825816008.jpg' />
           <View className='f4 pt20'>1235897981</View>
         </View>
+
+        {/* <KtUserCard /> */}
 
         <View className='mt20 mb20'>
           <KtOrderBar

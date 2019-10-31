@@ -21,6 +21,7 @@ class App extends Taro.Component {
       'pages/shopping/index',
       'pages/shopping/order/index',
       'pages/user/index',
+      'pages/classify/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -42,10 +43,10 @@ class App extends Taro.Component {
           text: '首页'
         },
         {
-          pagePath: 'pages/index/index',
+          pagePath: 'pages/classify/index',
           iconPath: 'public/imgs/tab/type.png',
           selectedIconPath: 'public/imgs/tab/type-active.png',
-          text: '服务'
+          text: '分类'
         },
         {
           pagePath: 'pages/shopping/index',
