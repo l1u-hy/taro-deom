@@ -5,8 +5,6 @@ import { observer, inject } from '@tarojs/mobx'
 import KtSearchBar from '../../comps/layout/searchBar'
 import KtSwipeBar from '../../comps/layout/swipeBar'
 import KtDrug from '../../comps/info/drug'
-import Tips from '../../utils/tips'
-
 import './index.scss'
 
 @inject('auth', 'home')
@@ -15,7 +13,6 @@ class Index extends Taro.Component {
 
   config = {
     navigationBarTitleText: '首页',
-    backgroundColor: '#ccc'
   }
 
   componentWillMount() {

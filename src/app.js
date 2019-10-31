@@ -20,6 +20,7 @@ class App extends Taro.Component {
       'pages/index/auth/index',
       'pages/shopping/index',
       'pages/shopping/order/index',
+      'pages/user/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -53,7 +54,7 @@ class App extends Taro.Component {
           text: '购物车'
         },
         {
-          pagePath: 'pages/index/index',
+          pagePath: 'pages/user/index',
           iconPath: 'public/imgs/tab/user.png',
           selectedIconPath: 'public/imgs/tab/user-active.png',
           text: '我的'

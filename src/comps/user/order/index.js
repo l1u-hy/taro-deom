@@ -7,7 +7,12 @@ import {routeToOrderList} from "../../../utils/route";
 
 
 class KtOrderBar extends Taro.Component {
-
+  static defaultProps = {
+    comp: {
+      title: {name: '', action: ''},
+      content: [],
+    }
+  }
 
   routeToOrderList =(idx) => {
     console.log(idx)
@@ -15,7 +20,6 @@ class KtOrderBar extends Taro.Component {
   }
   render() {
     const { comp } = this.props;
-
     return (
       <View className='order bgWhite'>
         {/*我的订单*/}
