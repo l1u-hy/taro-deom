@@ -117,6 +117,11 @@ shopping.handleDeteleSingleGood = async function (key, id) {
         good.isOpened = false
       }
     })
+    this.drugs.forEach(drug => {
+      if (drug.id === id) {
+        drug.isOpened = false
+      }
+    })
   } else {
     await Tips.confirm("确认从购物车中删除该商品吗？")
     this.goods = this.goods.filter(good => good.id !== id)
@@ -126,9 +131,11 @@ shopping.handleDeteleSingleGood = async function (key, id) {
         drug.isOpened = false
       }
     })
+    // 此处如果不设置isAllSelect，删除一个未选择商品时，全选状态不会改变
+    this.isAllSelect = this.goods.every(good => good.isSelect)
     Tips.success('删除成功')
-    setDrugsStorage(this.drugs)
   }
+  setDrugsStorage(this.drugs)
 }
 
 /**
@@ -137,6 +144,9 @@ shopping.handleDeteleSingleGood = async function (key, id) {
 shopping.handleOpenSwipeAction = function (id) {
   // 打开一个，其他关闭
   this.goods.forEach(good => good.isOpened = good.id === id)
+  // 此处如果不设置缓存，打开滑块关闭后，切换到其他页面，再切回来时，滑块会自动弹出
+  this.drugs.forEach(drug => drug.isOpened = drug.id === id)
+  setDrugsStorage(this.drugs)
 }
 
 // 计算总价

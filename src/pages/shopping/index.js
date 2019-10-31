@@ -32,16 +32,8 @@ export default class Shopping extends Taro.Component {
     navigationBarTitleText: '购物车'
   }
 
-  componentWillMount() {
-
-  }
-
   componentDidShow() {
     this.props.shopping.init()
-  }
-
-  componentDidMount() {
-
   }
 
   // 选择商品
