@@ -5,7 +5,7 @@ import Good from '../../comps/shopping/good'
 import Settle from '../../comps/shopping/settle'
 import './index.scss'
 
-@inject('auth')
+@inject('auth', 'shopping')
 @observer
 export default class Shopping extends Taro.Component {
 
@@ -13,146 +13,44 @@ export default class Shopping extends Taro.Component {
     navigationBarTitleText: '购物车'
   }
 
-  state = {
-    goods: [],
-    sumPrice: 0,
-    isAllSelect: false,
-    drugs: [],
-  }
-
   componentWillMount() {
 
   }
 
   componentDidShow() {
-    // 读取drugs --> goods
-    this.handleDrugsStorageToGoods()
+    this.props.shopping.init()
   }
 
   componentDidMount() {
 
   }
 
-  // 读取drugs --> goods
-  handleDrugsStorageToGoods() {
-    const that = this
-    Taro.getStorageInfo({
-      success({ keys }) {
-        if (keys.indexOf('drugs') !== -1) {
-          Taro.getStorage({
-            key: 'drugs',
-            success({ data }) {
-              const goods = data.filter(drug => drug.count)
-              // 保存 drugs 和 goods
-              that.setState({ drugs: data, goods })
-            }
-          })
-        }
-      }
-    })
-  }
-
   // 选择商品
-  handleOnCheckChange = (id, isSelect) => {
-    const { goods, drugs } = this.state
-    const currentGood = goods.filter(good => good.id === id)[0]
-    currentGood.isSelect = isSelect
-    // 计算总价
-    const sumPrice = this.getSumPrice(goods)
-    this.setState({
-      goods,
-      isAllSelect: goods.every(good => good.isSelect),
-      sumPrice,
-    })
-
-    // 处理 drugs
-    drugs.forEach(drug => {
-      if (drug.id === id) {
-        drug.isSelect = isSelect
-      }
-    })
-    this.setDrugsStorage(drugs)
+  onCheckChange = (id, isSelect) => {
+    this.props.shopping.handleOnCheckChange(id, isSelect)
   }
 
   // 全选
-  handleSelectAllGoods = (isAllSelect) => {
-    const { goods, drugs } = this.state
-    goods.forEach(good => good.isSelect = isAllSelect)
-    // 计算总价
-    const sumPrice = this.getSumPrice(goods)
-    this.setState({ goods, isAllSelect, sumPrice })
-
-    // 处理drugs
-    if (isAllSelect) {
-      goods.forEach(good => {
-        drugs.forEach(drug => {
-          if (drug.id === good.id) {
-            drug.isSelect = true;
-          }
-        })
-      })
-      this.setDrugsStorage(drugs)
-    }
+  onSelectAllGoods = (isAllSelect) => {
+    this.props.shopping.handleSelectAllGoods(isAllSelect)
   }
 
   // 数量加减
-  handleOnCountChange = (id, value) => {
-    // 形参 typeof value  string
-    value = parseInt(value)
-    let { goods, drugs } = this.state
-
-    // 处理 goods
-    const currentGood = goods.filter(good => good.id === id)[0]
-    currentGood.count = value
-    this.setState({ goods })
-    // 如果当前商品已选，计算总价
-    if (currentGood.isSelect) {
-      this.setState({ sumPrice: this.getSumPrice(goods) })
-    }
-
-    // 处理 drugs
-    drugs.forEach(drug => {
-      if (drug.id === id) {
-        drug.count = value
-      }
-    })
-    this.setDrugsStorage(drugs)
-  }
-
-  // 计算总价
-  getSumPrice = (goods) => {
-    return goods.filter(good => good.isSelect).reduce((prev, cur) => prev + cur.price * cur.count, 0)
+  onCountChange = (id, value) => {
+    this.props.shopping.handleOnCountChange(id, value)
   }
 
   // 结算
-  onSettle = () => {
-    const { goods, sumPrice } = this.state;
-    const puchaseGoods = goods.filter(good => good.isSelect)
-    if (sumPrice) {
-      const puchaseGoodData = encodeURIComponent(JSON.stringify(puchaseGoods))
-      Taro.navigateTo({
-        url: `/pages/shopping/order/index?puchaseGoodData=${puchaseGoodData}&sumPrice=${sumPrice}`
-      })
-    }
-  }
-
-  // 写drugs缓存
-  setDrugsStorage(drugs) {
-    Taro.setStorage({
-      key: 'drugs',
-      data: drugs,
-      success: () => {
-        this.setState({ drugs })
-      }
-    })
+  onSettleGoods = () => {
+    this.props.shopping.handleSettleGoods()
   }
 
   render() {
-    const { goods, sumPrice, isAllSelect } = this.state
+    const { shopping } = this.props
     return (
       <View className='index'>
         {/* 购物车商品列表 */}
-        {goods.map(good => (
+        {shopping.goods.map(good => (
           <Good
             isSelect={good.isSelect}
             key={good.id}
@@ -160,17 +58,17 @@ export default class Shopping extends Taro.Component {
             name={good.name}
             price={good.price}
             count={good.count}
-            onCountChange={this.handleOnCountChange.bind(this, good.id)}
-            onCheckChange={this.handleOnCheckChange.bind(this, good.id)}
+            onCountChange={this.onCountChange.bind(this, good.id)}
+            onCheckChange={this.onCheckChange.bind(this, good.id)}
           />
         ))}
 
         {/* 结算 */}
         <Settle
-          sumPrice={sumPrice}
-          isAllSelect={isAllSelect}
-          onCheckChange={this.handleSelectAllGoods}
-          onSettle={this.onSettle}
+          sumPrice={shopping.sumPrice}
+          isAllSelect={shopping.isAllSelect}
+          onCheckChange={this.onSelectAllGoods.bind(this)}
+          onSettle={this.onSettleGoods.bind(this)}
         />
       </View>
     )
